@@ -1,0 +1,32 @@
+class Solution {
+    public int subarraysDivByK(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1); // Initialize with remainder 0 having one count
+        
+        int sum = 0;
+        int count = 0;
+        
+        for (int num : nums) {
+            sum += num;
+            
+            // Calculate remainder of the cumulative sum
+            int remainder = sum % k;
+            
+            // Handle negative remainders
+            if (remainder < 0) {
+                remainder += k;
+            }
+            
+            // If the remainder has been seen before, it means there are subarrays
+            // that sum up to a value divisible by k
+            if (map.containsKey(remainder)) {
+                count += map.get(remainder);
+            }
+            
+            // Update the count of this remainder in the map
+            map.put(remainder, map.getOrDefault(remainder, 0) + 1);
+        }
+        
+        return count;
+    }
+}
